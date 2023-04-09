@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 
@@ -15,6 +16,7 @@ class Blog(models.Model):
     youtube_url = models.CharField(max_length=150, null=True,blank=True)
     pintarest_url = models.CharField(max_length=150, null=True,blank=True)
     instagram_url = models.CharField(max_length=150, null=True,blank=True)
+    google_url = models.CharField(max_length=150, null=True,blank=True)
 
     def __str__(self):
         return self.blog_name
@@ -36,8 +38,10 @@ class category(models.Model):
         return self.category_name
     
     def save(self, *args, **kwargs):
-        if not self.category_slug:
-            self.category_slug = slugify(self.category_name)
+        if not self.slug:
+            self.slug = slugify(self.category_name)
+            while category.objects.filter(slug=self.slug).exists():
+                self.slug = f'{slugify(self.category)}-{get_random_string(2)}'
         super().save(*args, **kwargs)
     
 class Post(models.Model):
@@ -46,18 +50,21 @@ class Post(models.Model):
         ('published', 'Published'),
     ]
     
-    post_title = models.CharField(max_length=200, unique=True)
-    post_slug = models.SlugField(max_length=160, unique=True)
+    post_title = models.CharField(max_length=160, unique=True)
+    slug = models.SlugField(max_length=160, unique=True)
     post_category = models.ForeignKey(category, on_delete=models.PROTECT)
     post_image = models.ImageField(upload_to='uploads/', null=True, blank=True)
     post_author = models.ForeignKey(author, on_delete=models.CASCADE)
     post_content = RichTextUploadingField()
-    post_tag = TaggableManager(blank=True)
+    tags = TaggableManager(blank=True)
     post_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     post_date = models.DateField(auto_now_add=True)
     mod_post = models.DateField(auto_now=True)
     featured_post = models.BooleanField(default=False)
     views = models.IntegerField(default=0, blank=True, null=True)
+    meta_title = models.CharField(max_length=160, blank=True, null=True)
+    meta_keywords = models.CharField(max_length=200, blank=True, null=True)
+    meta_description = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.post_title
@@ -66,8 +73,10 @@ class Post(models.Model):
         ordering = ['post_date']
 
     def save(self, *args, **kwargs):
-        if not self.post_slug:
-            self.post_slug = slugify(self.post_title)
+        if not self.slug:
+            self.slug = slugify(self.post_title)
+            while Post.objects.filter(slug=self.slug).exists():
+                self.slug = f'{slugify(self.post_title)}-{get_random_string(2)}'
         super().save(*args, **kwargs)
 
 class Comment(models.Model):

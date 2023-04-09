@@ -11,10 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <!-- Site Metas -->
-    <title>{{blog.blog_name}}</title>
-    <meta name="keywords" content="">
-    <meta name="description" content=" {{blog.blog_descriptions}}">
-    <meta name="author" content="">
+    {% block 'meta' %} {% endblock 'meta' %}
     
     <!-- Site Icons -->
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
@@ -53,8 +50,8 @@
         <div class="collapse top-search" id="collapseExample">
             <div class="card card-block">
                 <div class="newsletter-widget text-center">
-                    <form class="form-inline">
-                        <input type="text" class="form-control" placeholder="What you are looking for?">
+                    <form class="form-inline" action="" method="GET">
+                        <input type="text" name= "search" class="form-control" placeholder="What you are looking for?">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                     </form>
                 </div><!-- end newsletter -->
@@ -66,12 +63,12 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
                         <div class="topsocial">
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Youtube"><i class="fa fa-youtube"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="{{blog.facebook_url}}" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
+                            <a href="{{blog.youtube_url}}" data-toggle="tooltip" data-placement="bottom" title="Youtube"><i class="fa fa-youtube"></i></a>
+                            <a href="{{blog.pintarest_url}}" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
+                            <a href="{{blog.twitter_url}}" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Flickr"><i class="fa fa-flickr"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram"></i></a>
+                            <a href="{{blog.instagram_url}}" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google+"><i class="fa fa-google-plus"></i></a>
                         </div><!-- end social -->
                     </div><!-- end col -->
@@ -109,7 +106,7 @@
                     <div class="collapse navbar-collapse justify-content-md-center" id="Forest Timemenu">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link color-green-hover" href="garden-index.html">Home</a>
+                                <a class="nav-link color-green-hover" href="{% url 'home'%}">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link color-green-hover" href="garden-category.html">Gardening</a>
@@ -133,7 +130,6 @@
         </header><!-- end header -->
 
         {% block content %} {% endblock content %}
-        {% block category %} {% endblock category %}
 
         <footer class="footer">
             <div class="container">
@@ -144,11 +140,11 @@
                                 <a href="index.html"><img src="{% static 'images/version/garden-footer-logo.png' %}" alt="" class="img-fluid"></a>
                                 <p>Forest Time is a personal blog for handcrafted, cameramade photography content, fashion styles from independent creatives around the world.</p>
                                 <div class="social">
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>              
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram"></i></a>
+                                    <a href="{{blog.facebook_url}}" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>              
+                                    <a href="{{blog.twitter_url}}" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
+                                    <a href="{{blog.instagram_url}}" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram"></i></a>
                                     <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><i class="fa fa-google-plus"></i></a>
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
+                                    <a href="{{blog.pintarest_url}}" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
                                 </div>
 
                                 <hr class="invis">
@@ -162,7 +158,7 @@
                     <div class="col-md-12 text-center">
                         <br>
                         <br>
-                        <div class="copyright">&copy; Forest Time. Design: <a href="http://html.design">HTML Design</a>.</div>
+                        <div class="copyright">&copy; Forest Time. Design: <a href="http://html.design">django test blog</a>.</div>
                     </div>
                 </div>
             </div><!-- end container -->
